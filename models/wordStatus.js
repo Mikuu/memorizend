@@ -1,6 +1,6 @@
 module.exports = {
     POOL: 'pool',
-    M0: 'm0',
+    // M0: 'm0',
     M5: 'm5',
     M30: 'm30',
     H12: 'h12',

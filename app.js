@@ -6,6 +6,8 @@ const morganMiddleware = require("./middlewares/morganMiddleware");
 
 const healthRouter = require('./routes/health');
 const wordsRouter = require('./routes/words');
+const timewordsRouter = require('./routes/timewords');
+const configRouter = require('./routes/config');
 const databaseUtils = require('./utils/databaseUtils');
 
 const app = express();
@@ -19,6 +21,8 @@ app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(morganMiddleware);
 app.use('/health', healthRouter);
 app.use('/words', wordsRouter);
+app.use('/timewords', timewordsRouter);
+app.use('/config', configRouter);
 
 databaseUtils.connect();
 
