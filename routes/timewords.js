@@ -44,32 +44,35 @@ router.get("/:time", [],
     })
 );
 
-router.post("/:time", [],
+router.post("/:time", [
+        check('complete', '"complete" must be provided as array').isArray()
+    ],
     catchAsync(async (req, res, next) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(StatusCodes.BAD_REQUEST).json(generalResponse(errors.array()).failed);
       }
 
+      let updatedCount;
       switch (req.params.time) {
           case "t0":
-              await timewordsService.completeT0Words();
+              updatedCount = await timewordsService.completeT0Words(req.body.complete);
               break;
           case "t1":
-              await timewordsService.completeT1Words();
+              updatedCount = await timewordsService.completeT1Words(req.body.complete);
               break;
           case "t2":
-              await timewordsService.completeT2Words();
+              updatedCount = await timewordsService.completeT2Words(req.body.complete);
               break;
           case "t3":
-              await timewordsService.completeT3Words();
+              updatedCount = await timewordsService.completeT3Words(req.body.complete);
               break;
           case "crossDays":
-              await timewordsService.completeCrossDaysWords();
+              updatedCount = await timewordsService.completeCrossDaysWords(req.body.complete);
               break;
       }
 
-      res.status(StatusCodes.OK).send({});
+      res.status(StatusCodes.OK).send({ updatedCount });
     })
 );
 

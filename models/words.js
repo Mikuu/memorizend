@@ -12,7 +12,8 @@ const WordSchema = new Schema({
     // wid: { type: Number, default: null },
     wid: { type: String, default: "", trim: true, maxlength: 100 },
     status: { type: String, default: "POOL", enum: Object.values(wordStatus), trim: true },
-    completedAt: { type: String, default: "", trim: true, maxlength: 20 },
+    startedOn: { type: Date },
+    completedOn: { type: Date },
 }, { timestamps: true });
 
 /**

@@ -11,7 +11,8 @@ const createWordsInBulk = async (words) => {
             word,
             wid: wordUuid(),
             status: wordStatus.POOL,
-            completedAt: ""
+            startedOn: null,
+            completedOn: null
         }
     });
 
