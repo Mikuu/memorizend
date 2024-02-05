@@ -12,6 +12,7 @@ const createWordsInBulk = async (words) => {
             chinese: word.chinese,
             exampleSentence: word.exampleSentence,
             pronunciation: word.pronunciation,
+            difficulty: word.difficulty,
             wid: wordUuid(),
             status: wordStatus.POOL,
             startedOn: null,

@@ -33,13 +33,15 @@ router.get("/:time", [],
 
       const responseWords = words.map(word => {
         return {
-          wid: word.wid,
-          word: word.word,
-          chinese: word.chinese,
-          exampleSentence: word.exampleSentence,
-          pronunciation: word.pronunciation,
-          status: word.status,
-          completedAt: word.completedAt
+            wid: word.wid,
+            word: word.word,
+            chinese: word.chinese,
+            exampleSentence: word.exampleSentence,
+            pronunciation: word.pronunciation,
+            difficulty: word.difficulty,
+            status: word.status,
+            startedOn: word.startedOn,
+            completedOn: word.completedOn
         }
       });
 

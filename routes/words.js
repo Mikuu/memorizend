@@ -21,7 +21,9 @@ router.get("/bulk", [],
           exampleSentence: word.exampleSentence,
           pronunciation: word.pronunciation,
           status: word.status,
-          completedAt: word.completedAt
+          difficulty: word.difficulty,
+          startedOn: word.startedOn,
+          completedOn: word.completedOn
         }
       });
 

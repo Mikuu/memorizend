@@ -12,6 +12,7 @@ const WordSchema = new Schema({
     chinese: { type: String, default: "", trim: true, maxlength: 50 },
     pronunciation: { type: String, default: "", trim: true, maxlength: 200 },
     exampleSentence: { type: String, default: "", trim: true, maxlength: 1200 },
+    difficulty: { type: Number, default: 0 },
     // wid: { type: Number, default: null },
     wid: { type: String, default: "", trim: true, maxlength: 100 },
     status: { type: String, default: "POOL", enum: Object.values(wordStatus), trim: true },
