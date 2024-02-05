@@ -8,7 +8,10 @@ const Word = new mongoose.model('Word', WordSchema);
 const createWordsInBulk = async (words) => {
     const wordsToInsert = words.map(word => {
         return {
-            word,
+            word: word.word,
+            chinese: word.chinese,
+            exampleSentence: word.exampleSentence,
+            pronunciation: word.pronunciation,
             wid: wordUuid(),
             status: wordStatus.POOL,
             startedOn: null,

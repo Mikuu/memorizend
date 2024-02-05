@@ -17,6 +17,9 @@ router.get("/bulk", [],
         return {
           wid: word.wid,
           word: word.word,
+          chinese: word.chinese,
+          exampleSentence: word.exampleSentence,
+          pronunciation: word.pronunciation,
           status: word.status,
           completedAt: word.completedAt
         }
