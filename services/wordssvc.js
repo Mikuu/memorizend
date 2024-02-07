@@ -15,7 +15,16 @@ const createWordsInBulk = async (words) => {
             difficulty: word.difficulty,
             wid: wordUuid(),
             status: wordStatus.POOL,
+            inDay: null,
             startedOn: null,
+            completedM5On: null,
+            completedM30On: null,
+            completedH12On: null,
+            completedD1On: null,
+            completedD2On: null,
+            completedD4On: null,
+            completedD7On: null,
+            completedD15On: null,
             completedOn: null
         }
     });

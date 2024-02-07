@@ -40,7 +40,16 @@ router.get("/:time", [],
             pronunciation: word.pronunciation,
             difficulty: word.difficulty,
             status: word.status,
+            inDay: word.inDay,
             startedOn: word.startedOn,
+            completedM5On: word.completedM5On,
+            completedM30On: word.completedM30On,
+            completedH12On: word.completedH12On,
+            completedD1On: word.completedD1On,
+            completedD2On: word.completedD2On,
+            completedD4On: word.completedD4On,
+            completedD7On: word.completedD7On,
+            completedD15On: word.completedD15On,
             completedOn: word.completedOn
         }
       });

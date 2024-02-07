@@ -39,21 +39,29 @@ const checkIfCrossDaysWordIsReadyOnTime = (word) => {
     return checkTimeDifference(startedTime, currentTime, differenceInDays);
 };
 
+/***
+ getWords returns the same day's word to T0(0), T1(+5m), T2(+30m), T3(+12h), after completed T3, it will return the next
+ day's words.
+ ***/
 const getWords = async (time) => {
     let words;
     switch (time) {
         case wordTime.T0:
             const wordsPerDay = await configService.getWordsPerDay();
-            words = await Word.find({ status: wordStatus.POOL }).limit(wordsPerDay);
+            words = await Word.find({ inDay: true }).limit(wordsPerDay);
+            words = words.length ? words : await Word.find({ status: wordStatus.POOL }).limit(wordsPerDay);
             break;
         case wordTime.T1:
-            words = await Word.find({ status: wordStatus.M5 });
+            words = await Word.find({ inDay: true, completedM5On: { $ne: null } });
+            words = words.length ? words : await Word.find({ status: wordStatus.M5 });
             break;
         case wordTime.T2:
-            words = await Word.find({ status: wordStatus.M30 });
+            words = await Word.find({ inDay: true, completedM30On: { $ne: null } });
+            words = words.length ? words : await Word.find({ status: wordStatus.M30 });
             break;
         case wordTime.T3:
-            words = await Word.find({ status: wordStatus.H12 });
+            words = await Word.find({ inDay: true, completedH12On: { $ne: null } });
+            words = words.length ? words : await Word.find({ status: wordStatus.H12 });
             break;
         case wordTime.CrossDays:
             const crossDaysStatus = [wordStatus.D1, wordStatus.D2, wordStatus.D4, wordStatus.D7, wordStatus.D15];
@@ -65,24 +73,35 @@ const getWords = async (time) => {
     return words;
 };
 
-const checkAndUpdateCrossDaysWords = async (wids2Complete) => {
+const checkAndUpdateCrossDaysWords = async (wids2Complete, currentTime) => {
     const result = { modifiedCount: 0 };
     const updateWordStatus = async word => {
         switch (word.status) {
             case wordStatus.D1:
+                word.completedD1On = currentTime;
                 word.status = wordStatus.D2;
+                word.inDay = false;
                 break;
             case wordStatus.D2:
+                word.completedD2On = currentTime;
                 word.status = wordStatus.D4;
+                word.inDay = false;
                 break;
             case wordStatus.D4:
+                word.completedD4On = currentTime;
                 word.status = wordStatus.D7;
+                word.inDay = false;
                 break;
             case wordStatus.D7:
+                word.completedD7On = currentTime;
                 word.status = wordStatus.D15;
+                word.inDay = false;
                 break;
             case wordStatus.D15:
+                word.completedD15On = currentTime;
+                word.completedOn = currentTime;
                 word.status = wordStatus.COMPLETED;
+                word.inDay = false;
                 break;
         }
         await word.save();
@@ -105,26 +124,38 @@ const completeWords = async (time, wids2complete) => {
         }
     };
 
+    const currentTime = new Date();
     switch (time) {
         case wordTime.T0:
-            const currentTime = new Date();
-            result = await Word.updateMany({ wid: { $in: wids2complete } }, { status: wordStatus.M5, startedOn: currentTime });
+            result = await Word.updateMany(
+                { wid: { $in: wids2complete } },
+                { startedOn: currentTime, inDay: true, status: wordStatus.M5 }
+            );
             checkUpdatedResultCount(result);
             break;
         case wordTime.T1:
-            result = await Word.updateMany({ wid: { $in: wids2complete } }, { status: wordStatus.M30 });
+            result = await Word.updateMany(
+                { wid: { $in: wids2complete } },
+                { completedM5On: currentTime, inDay: true, status: wordStatus.M30 }
+            );
             checkUpdatedResultCount(result);
             break;
         case wordTime.T2:
-            result = await Word.updateMany({ wid: { $in: wids2complete } }, { status: wordStatus.H12 });
+            result = await Word.updateMany(
+                { wid: { $in: wids2complete } },
+                { completedM30On: currentTime, inDay: true, status: wordStatus.H12 }
+            );
             checkUpdatedResultCount(result);
             break;
         case wordTime.T3:
-            result = await Word.updateMany({ wid: { $in: wids2complete } }, { status: wordStatus.D1 });
+            result = await Word.updateMany(
+                { wid: { $in: wids2complete } },
+                { completedH12On: currentTime, inDay: false, status: wordStatus.D1 }
+            );
             checkUpdatedResultCount(result);
             break;
         case wordTime.CrossDays:
-            result = await checkAndUpdateCrossDaysWords(wids2complete);
+            result = await checkAndUpdateCrossDaysWords(wids2complete, currentTime);
             checkUpdatedResultCount(result)
             break;
     }

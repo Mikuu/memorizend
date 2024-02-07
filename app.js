@@ -16,7 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
+// app.use(cors({ origin: 'http://10.206.20.30:5173' }));
 
 app.use(morganMiddleware);
 app.use('/health', healthRouter);
