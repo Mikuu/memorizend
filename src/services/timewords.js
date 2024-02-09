@@ -3,8 +3,8 @@ const { WordSchema } = require("../models/words");
 const { wordUuid } = require("../utils/uuidUtils");
 const wordStatus = require('../models/wordStatus');
 const wordTime = require('../models/wordTime');
-const configService = require('../services/config');
-const wordService = require('../services/wordssvc');
+const configService = require('./config');
+const wordService = require('./wordssvc');
 
 const Word = new mongoose.model('Word', WordSchema);
 
