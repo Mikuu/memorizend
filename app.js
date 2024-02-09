@@ -16,8 +16,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(cors({ origin: 'http://localhost:5173' }));
-// app.use(cors({ origin: 'http://10.206.20.30:5173' }));
+// app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: '*' }));
 
 app.use(morganMiddleware);
 app.use('/health', healthRouter);
@@ -27,7 +27,7 @@ app.use('/config', configRouter);
 
 databaseUtils.connect();
 
-const port = process.env.PORT || 3101;
+const port = process.env.PORT || 3401;
 app.listen(port, () => {
     logger.info(`MMRService is running at ${port}`);
 })
