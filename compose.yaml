@@ -1,0 +1,39 @@
+services:
+  mmr-mongodb:
+    image: mongo:6.0
+    container_name: mmrbackendb
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mgadmin
+      - MONGO_INITDB_ROOT_PASSWORD=Password1
+      - MONGO_INITDB_DATABASE=mmrbackendb
+    networks:
+      - mmr-network
+    volumes:
+      - "database-volume:/data/db"
+      - "./database/initializer:/docker-entrypoint-initdb.d"
+
+  meemorizend:
+    image: ariman/memorizend:latest
+    container_name: memorizend
+    environment:
+      - MMRB_ENV=docker
+      - MMRB_DB_USERNAME=mmr-user
+      - MMRB_DB_PASSWORD=mmr-password
+    ports:
+      - "3401:3401"
+    depends_on:
+      - mmr-mongodb
+    networks:
+      - mmr-network
+
+  memorizering:
+    image: ariman/memorizering:latest
+    container_name: memorizering
+    ports:
+      - "3400:3400"
+
+volumes:
+  database-volume:
+
+networks:
+  mmr-network:
