@@ -12,13 +12,14 @@ const databaseUtils = require('./utils/databaseUtils');
 
 const app = express();
 
-// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(cors({ origin: 'http://localhost:5173' }));
-app.use(cors({ origin: '*' }));
-
+app.use(cors(
+    { origin: process.env.MMRB_ENV === 'docker'
+        ? ['http://119.3.156.32:3400', 'http://hw.piggy.instance:3400']
+        : '*' })
+);
 app.use(morganMiddleware);
 app.use('/health', healthRouter);
 app.use('/words', wordsRouter);

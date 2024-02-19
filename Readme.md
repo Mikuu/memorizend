@@ -20,9 +20,25 @@ docker network create mmr-network
 docker network connect mmr-network mmrb-mongodb
 ```
 
-Run service with docker
+Build docker image
 ```commandline
-./bulid-image.sh
+./dockering.sh build 0.0.1
+```
 
+Tag docker image
+```commandline
+./dockering.sh tag 0.0.1
+```
+
+Push docker image
+```commandline
+./dockering push 0.0.1
+```
+
+Run service with docker
+> for production only
+```commandline
 ./run-docker.sh
 ```
+
+
