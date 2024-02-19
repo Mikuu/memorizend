@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3401 nodemon src/app.js"
+    "dev": "PORT=3401 MMRB_DB_USERNAME=mmr-user MMRB_DB_PASSWORD=mmr-password nodemon src/app.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
