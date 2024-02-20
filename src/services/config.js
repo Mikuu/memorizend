@@ -7,9 +7,15 @@ const getConfig = async () => {
     return await Config.findOne({ configName: "general" });
 };
 
-const initializeConfig = async () => {
-    const config = await Config();
-    return await config.save();
+const checkAndInitializeConfig = async () => {
+    let config = await getConfig()
+    if (config) {
+        console.log(`Config exists`);
+    } else {
+        config = await Config();
+        config.save();
+        console.log(`Config doesn't exist, initialized new one ...`);
+    }
 };
 
 const getWordsPerDay = async () => {
@@ -32,7 +38,7 @@ const updateConfig = async (config) => {
 
 module.exports = {
     getConfig,
-    initializeConfig,
+    checkAndInitializeConfig,
     getWordsPerDay,
     updateConfig,
 }

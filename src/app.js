@@ -9,6 +9,7 @@ const wordsRouter = require('./routes/words');
 const timewordsRouter = require('./routes/timewords');
 const configRouter = require('./routes/config');
 const databaseUtils = require('./utils/databaseUtils');
+const configService = require('./services/config');
 
 const app = express();
 
@@ -30,6 +31,7 @@ databaseUtils.connect();
 
 const port = process.env.PORT || 3401;
 app.listen(port, () => {
+    (async () => { await configService.checkAndInitializeConfig(); })();
     logger.info(`MMRService is running at ${port}`);
 })
 

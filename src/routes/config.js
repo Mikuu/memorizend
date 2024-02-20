@@ -28,19 +28,6 @@ router.get("", [],
     })
 );
 
-router.post("/init", [],
-    catchAsync(async (req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(StatusCodes.BAD_REQUEST).json(generalResponse(errors.array()).failed);
-      }
-
-      await configService.initializeConfig();
-
-      res.status(StatusCodes.OK).send({});
-    })
-);
-
 router.post("", [
         check("config.wordsPerDay", "wordsPerDay must be provided").isNumeric(),
         check("config.t0shiftTime", "t0shiftTime must be provided").isNumeric(),
